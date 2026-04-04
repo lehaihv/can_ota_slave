@@ -13,7 +13,7 @@ static const char *TAG = "OTA_SLAVE";
 
 // ─── TWAI init ────────────────────────────────────────────────────────────────
 
-static void can_init(void)
+void ota_can_init(void)
 {
     twai_general_config_t g_cfg = TWAI_GENERAL_CONFIG_DEFAULT(CAN_TX_PIN, CAN_RX_PIN,
                                                                TWAI_MODE_NORMAL);
@@ -57,7 +57,10 @@ static bool wait_for_trigger(void)
     ESP_LOGI(TAG, "Waiting for OTA trigger...");
     while (1) {
         twai_message_t msg;
-        if (twai_receive(&msg, portMAX_DELAY) != ESP_OK) continue;
+        /* Short timeout so other tasks can transmit between checks */
+        esp_err_t ret = twai_receive(&msg, pdMS_TO_TICKS(50));
+        if (ret == ESP_ERR_TIMEOUT) continue;
+        if (ret != ESP_OK) continue;
         if (msg.identifier != CAN_ID_TRIGGER) continue;
         if (msg.data_length_code < 4) continue;
         if (msg.data[0] == OTA_TRIGGER_BYTE0 &&
@@ -211,7 +214,6 @@ static bool receive_and_apply_ota(void)
 
 static void slave_task(void *arg)
 {
-    can_init();
     while (1) {
         if (wait_for_trigger()) {
             if (!receive_and_apply_ota()) {

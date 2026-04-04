@@ -20,6 +20,7 @@ void app_main(void)
     }
 
     ESP_LOGI(TAG, "Role: SLAVE  (CAN OTA receiver)");
+    ota_can_init();        // install TWAI driver once, shared by all tasks
     app_tasks_start();
     ota_can_slave_start();
 }
