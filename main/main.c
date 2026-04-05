@@ -1,7 +1,7 @@
 #include "esp_log.h"
 #include "esp_ota_ops.h"
-#include "ota_can_slave.h"
-#include "app_tasks.h"
+#include "OTA/ota_can_slave.h"
+#include "OTA/app_tasks.h"
 
 static const char *TAG = "MAIN";
 
