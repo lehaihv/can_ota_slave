@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 // ─── TWAI (CAN) pin config ────────────────────────────────────────────────────
-#define CAN_TX_PIN          21
-#define CAN_RX_PIN          22
+#define CAN_TX_PIN          17
+#define CAN_RX_PIN          16
 // Bitrate: 500 kbps — both boards must match
 #define CAN_BITRATE         TWAI_TIMING_CONFIG_500KBITS()
 
