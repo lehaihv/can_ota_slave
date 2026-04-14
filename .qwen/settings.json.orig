@@ -3,6 +3,5 @@
     "allow": [
       "Bash(rm *)"
     ]
-  },
-  "$version": 3
+  }
 }
